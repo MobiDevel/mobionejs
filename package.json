@@ -1,5 +1,5 @@
 {
-  "name": "mobionejs",
+  "name": "@mobione/mobionejs",
   "version": "1.0.1",
   "description": "JavaScript / TypeScript  models for integrating with MobiOne transportation and temperature systems",
   "main": "./dist/index.cjs",
