@@ -1,8 +1,1 @@
-# Changelog
-
-All notable changes to this project will be documented in this file.
-
-## [1.0.0] - 2025-10-28
-
-### Added
-- Initial public release scaffolding for the MobiOne JS models.
+## 1.0.1 (2025-10-28)
