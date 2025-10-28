@@ -45,6 +45,8 @@ jobs:
         with:
           node-version: "22.x"
           cache: "npm"
+          registry-url: "https://registry.npmjs.org/"
+          always-auth: true
       - name: Install deps
         run: npm ci
       - name: Verify (strict)
