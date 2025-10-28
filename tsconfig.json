@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
+    "isolatedModules": false,
+    "lib": ["ES2020"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "noEmit": false,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true
+  },
+  "exclude": [
+    "node_modules",
+    "coverage",
+    "**/__mocks__/*",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/storybook",
+    "assets",
+    "babel.config.js",
+    "jest.config.js",
+    "dist",
+    "main.ts", // If you have a specific entry point for React Native, exclude it
+    "App.tsx", // Exclude your main React Native application file
+    "jest-setup.js",
+    "eslint.config.mjs",
+    "scripts/**",
+    ".jest",
+    "docs"
+  ]
+}

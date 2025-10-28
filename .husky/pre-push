@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "😎 husky(pre-push): running verify:strict + changelog"
+if npm run verify:strict --silent; then
+    echo "✅ verify:strict ok"
+else
+    echo "😡 verify:strict failed"; exit 1
+fi
+
+echo "📝 Changelog integrity (local)"
+if npm run check:changelog --silent; then
+    echo "✅ changelog ok"
+else
+    echo "❌ changelog missing version section"; exit 1
+fi
+
+echo "🚀 push checks passed"

@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "🤓 husky(pre-commit): quality gate (mobione-sdk)"
+
+if git diff --cached --quiet; then
+    echo "ℹ️  No staged changes; skipping"
+    exit 0
+fi
+
+echo "📦 Ensuring dependencies installed (prepare may have run)"
+npm ls >/dev/null 2>&1 || npm install --no-audit --no-fund
+
+echo "🧪 Tests (fast)"
+if npm run test:dev --silent; then
+    echo "✅ Tests ok"
+else
+    echo "❌ Tests failed"; exit 1
+fi
+
+echo "🧹 Lint + format"
+if npm run lint --silent; then
+    echo "✅ Lint ok"
+else
+    echo "❌ Lint failed"; exit 1
+fi
+
+echo "📖 TOC refresh"
+if npm run docs:toc --silent; then
+    echo "✅ TOC ok"
+else
+    echo "❌ TOC update failed"; exit 1
+fi
+
+echo "🔐 Type/build (tsc)"
+if npm run build --silent; then
+    echo "✅ Build ok"
+else
+    echo "❌ Build failed"; exit 1
+fi
+
+echo "🛡  Legacy import guard"
+if npm run check:legacy-imports --silent; then
+    echo "✅ Legacy imports clean"
+else
+    echo "❌ Legacy import violations"; exit 1
+fi
+
+echo "🚀 pre-commit passed"
+
+
+

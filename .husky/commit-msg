@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+msgFile="$1"
+msg=$(cat "$msgFile")
+
+# Require a ClickUp task ID (pattern CU-xxxx) somewhere in the subject (first line)
+firstLine=$(head -n1 "$msgFile")
+
+# Conventional Commits pattern (type(scope)!: description) optional scope/bang; allow chore|feat|fix|refactor|docs|test|perf|build|ci|revert
+if ! echo "$firstLine" | grep -Eq '^(chore|feat|fix|refactor|docs|test|perf|build|ci|revert)(\([^()]+\))?(!)?: .+'; then
+  echo "❌ commit-msg: First line must follow Conventional Commits (e.g. feat(core): add X)" >&2
+  exit 1
+fi
+
+# ClickUp ID required somewhere on the first line (case insensitive CU-*)
+if ! echo "$firstLine" | grep -Eq 'CU-[A-Za-z0-9]+'; then
+  echo "❌ commit-msg: Missing ClickUp ID (e.g. CU-abc123). Include it in the first line." >&2
+  exit 1
+fi
+
+echo "✅ commit message format ok (Conventional + ClickUp ID)"

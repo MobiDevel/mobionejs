@@ -1,0 +1,33 @@
+name: CI
+on: [push]
+jobs:
+  build:
+    name: Build, lint, and test on Node
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # This is required for actions/checkout
+      packages: read # <-- needed for GitHub Packages
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+
+      - name: Install deps (with cache)
+        run: npm ci
+        env:
+          GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+
+      - name: Lint
+        run: npm run lint:ci
+
+      - name: Test
+        run: npm run test
+
+      - name: Build
+        run: npm run build
+
+      - name: Size
+        run: npm run size

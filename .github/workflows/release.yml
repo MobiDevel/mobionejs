@@ -1,0 +1,105 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: "Version bump type (patch|minor|major)"
+        required: true
+        default: patch
+        type: choice
+        options: [patch, minor, major]
+      cu_id:
+        description: "ClickUp task ID (e.g. CU-abc123)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: release-${{ github.ref }}
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Configure Git author
+        run: |
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+      - name: Ensure branch allowed
+        run: |
+          BRANCH="${GITHUB_REF_NAME}"
+          if [ "$BRANCH" != "main" ] && [ "$BRANCH" != "development" ]; then
+            echo "Releases only allowed from main or development. Current: $BRANCH" >&2
+            exit 1
+          fi
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.x"
+          cache: "npm"
+      - name: Install deps
+        run: npm ci
+      - name: Verify (strict)
+        run: npm run verify:strict
+      - name: Run release bump
+        env:
+          CU_ID: ${{ inputs.cu_id }}
+          HUSKY: 0
+        run: |
+          echo "Running bump: ${{ inputs.bump }} with CU_ID=${{ inputs.cu_id }}" 
+          if [ "${{ inputs.bump }}" = "patch" ]; then
+            npm run version:next
+          elif [ "${{ inputs.bump }}" = "minor" ]; then
+            npm run release:minor
+          else
+            npm run release:major
+          fi
+      - name: Extract version
+        id: get_version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+      - name: Derive notes from CHANGELOG
+        id: notes
+        run: |
+          VERSION="v${{ steps.get_version.outputs.version }}"
+          FILE=CHANGELOG.md
+          if [ ! -f "$FILE" ]; then echo 'CHANGELOG missing' >&2; exit 1; fi
+          # Extract section between heading for this version and next heading
+          awk -v ver="## [${{ steps.get_version.outputs.version }}]" 'BEGIN{found=0} 
+            $0 ~ ver {found=1; print; next} 
+            /^## \[/ && found==1 {exit} 
+            found==1 {print}' "$FILE" > RELEASE_NOTES.md || true
+          if [ ! -s RELEASE_NOTES.md ]; then
+            echo 'Fallback to recent conventional-changelog fragment'
+            node -e "require('child_process').execSync('conventional-changelog -p conventionalcommits -r 2',{stdio:'inherit'})" > RELEASE_NOTES.md || echo 'Changelog generation fallback' >> RELEASE_NOTES.md
+          fi
+          echo 'notes<<EOF' >> $GITHUB_OUTPUT
+          cat RELEASE_NOTES.md >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+      - name: Push commit & tags
+        env:
+          HUSKY: 0
+        run: |
+          git push origin HEAD:${GITHUB_REF_NAME}
+          git push --tags
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.get_version.outputs.version }}
+          name: v${{ steps.get_version.outputs.version }}
+          body: ${{ steps.notes.outputs.notes }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish to NPMJS
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm publish
