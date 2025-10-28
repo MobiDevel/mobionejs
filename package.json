@@ -12,125 +12,15 @@
       "require": "./dist/index.cjs"
     },
     "./package.json": "./package.json",
-    "./address/*": {
-      "types": "./dist/address/*.d.ts",
-      "import": "./dist/address/*.mjs",
-      "require": "./dist/address/*.cjs"
+    "./loads/*": {
+      "types": "./dist/loads/*.d.ts",
+      "import": "./dist/loads/*.mjs",
+      "require": "./dist/loads/*.cjs"
     },
-    "./auth/*": {
-      "types": "./dist/auth/*.d.ts",
-      "import": "./dist/auth/*.mjs",
-      "require": "./dist/auth/*.cjs"
-    },
-    "./chat/*": {
-      "types": "./dist/chat/*.d.ts",
-      "import": "./dist/chat/*.mjs",
-      "require": "./dist/chat/*.cjs"
-    },
-    "./constants/*": {
-      "types": "./dist/constants/*.d.ts",
-      "import": "./dist/constants/*.mjs",
-      "require": "./dist/constants/*.cjs"
-    },
-    "./customer/*": {
-      "types": "./dist/customer/*.d.ts",
-      "import": "./dist/customer/*.mjs",
-      "require": "./dist/customer/*.cjs"
-    },
-    "./data/*": {
-      "types": "./dist/data/*.d.ts",
-      "import": "./dist/data/*.mjs",
-      "require": "./dist/data/*.cjs"
-    },
-    "./event/*": {
-      "types": "./dist/event/*.d.ts",
-      "import": "./dist/event/*.mjs",
-      "require": "./dist/event/*.cjs"
-    },
-    "./image/*": {
-      "types": "./dist/image/*.d.ts",
-      "import": "./dist/image/*.mjs",
-      "require": "./dist/image/*.cjs"
-    },
-    "./item/*": {
-      "types": "./dist/item/*.d.ts",
-      "import": "./dist/item/*.mjs",
-      "require": "./dist/item/*.cjs"
-    },
-    "./load/*": {
-      "types": "./dist/load/*.d.ts",
-      "import": "./dist/load/*.mjs",
-      "require": "./dist/load/*.cjs"
-    },
-    "./order/*": {
-      "types": "./dist/order/*.d.ts",
-      "import": "./dist/order/*.mjs",
-      "require": "./dist/order/*.cjs"
-    },
-    "./organisation/*": {
-      "types": "./dist/organisation/*.d.ts",
-      "import": "./dist/organisation/*.mjs",
-      "require": "./dist/organisation/*.cjs"
-    },
-    "./qa/*": {
-      "types": "./dist/qa/*.d.ts",
-      "import": "./dist/qa/*.mjs",
-      "require": "./dist/qa/*.cjs"
-    },
-    "./reason/*": {
-      "types": "./dist/reason/*.d.ts",
-      "import": "./dist/reason/*.mjs",
-      "require": "./dist/reason/*.cjs"
-    },
-    "./site/*": {
-      "types": "./dist/site/*.d.ts",
-      "import": "./dist/site/*.mjs",
-      "require": "./dist/site/*.cjs"
-    },
-    "./subscription/*": {
-      "types": "./dist/subscription/*.d.ts",
-      "import": "./dist/subscription/*.mjs",
-      "require": "./dist/subscription/*.cjs"
-    },
-    "./temp/*": {
-      "types": "./dist/temp/*.d.ts",
-      "import": "./dist/temp/*.mjs",
-      "require": "./dist/temp/*.cjs"
-    },
-    "./timestamp/*": {
-      "types": "./dist/timestamp/*.d.ts",
-      "import": "./dist/timestamp/*.mjs",
-      "require": "./dist/timestamp/*.cjs"
-    },
-    "./timetracking/*": {
-      "types": "./dist/timetracking/*.d.ts",
-      "import": "./dist/timetracking/*.mjs",
-      "require": "./dist/timetracking/*.cjs"
-    },
-    "./user/*": {
-      "types": "./dist/user/*.d.ts",
-      "import": "./dist/user/*.mjs",
-      "require": "./dist/user/*.cjs"
-    },
-    "./utils/*": {
-      "types": "./dist/utils/*.d.ts",
-      "import": "./dist/utils/*.mjs",
-      "require": "./dist/utils/*.cjs"
-    },
-    "./validation/*": {
-      "types": "./dist/validation/*.d.ts",
-      "import": "./dist/validation/*.mjs",
-      "require": "./dist/validation/*.cjs"
-    },
-    "./vehicle/*": {
-      "types": "./dist/vehicle/*.d.ts",
-      "import": "./dist/vehicle/*.mjs",
-      "require": "./dist/vehicle/*.cjs"
-    },
-    "./visit/*": {
-      "types": "./dist/visit/*.d.ts",
-      "import": "./dist/visit/*.mjs",
-      "require": "./dist/visit/*.cjs"
+    "./orders/*": {
+      "types": "./dist/orders/*.d.ts",
+      "import": "./dist/orders/*.mjs",
+      "require": "./dist/orders/*.cjs"
     }
   },
   "files": [
