@@ -67,8 +67,8 @@
     "url": "git+https://github.com/MobiDevel/mobionejs.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Thomas Hagström <thomas.hagstrom@mobione.com> (https://github.com/thomashagstrom)",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/MobiDevel/mobionejs/issues"
   },
