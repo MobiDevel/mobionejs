@@ -7,7 +7,7 @@ const pkgPath = path.join(root, 'package.json');
 const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
 
 const expectedFolders = [
-  'address','auth','chat','constants','customer','data','event','image','item','load','order','organisation','qa','reason','site','subscription','temp','timestamp','timetracking','user','utils','validation','vehicle','visit'
+  'loads','orders'
 ];
 
 const exportsField = pkg.exports || {};

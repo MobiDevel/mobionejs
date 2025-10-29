@@ -45,6 +45,8 @@ jobs:
         with:
           node-version: "22.x"
           cache: "npm"
+          registry-url: "https://registry.npmjs.org/"
+          always-auth: true
       - name: Install deps
         run: npm ci
       - name: Verify (strict)
@@ -70,7 +72,8 @@ jobs:
       - name: Derive notes from CHANGELOG
         id: notes
         run: |
-          VERSION="v${{ steps.get_version.outputs.version }}"
+          RAW_VERSION="${{ steps.get_version.outputs.version }}"
+          VERSION="v${RAW_VERSION}"
           FILE=CHANGELOG.md
           if [ ! -f "$FILE" ]; then echo 'CHANGELOG missing' >&2; exit 1; fi
           # Extract section between heading for this version and next heading
@@ -82,6 +85,10 @@ jobs:
             echo 'Fallback to recent conventional-changelog fragment'
             node -e "require('child_process').execSync('conventional-changelog -p conventionalcommits -r 2',{stdio:'inherit'})" > RELEASE_NOTES.md || echo 'Changelog generation fallback' >> RELEASE_NOTES.md
           fi
+          {
+            echo ''
+            echo "View on npm: https://www.npmjs.com/package/@mobione/mobionejs/v/${RAW_VERSION}"
+          } >> RELEASE_NOTES.md
           echo 'notes<<EOF' >> $GITHUB_OUTPUT
           cat RELEASE_NOTES.md >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
@@ -100,6 +107,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish to NPMJS
+        run: npm publish --access public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm publish
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
